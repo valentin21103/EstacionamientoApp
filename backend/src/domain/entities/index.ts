@@ -1,0 +1,6 @@
+export type { Cliente } from './Cliente.js'
+export type { Estadia } from './Estadia.js'
+export type { Plaza } from './Plaza.js'
+export type { Tarifa } from './Tarifa.js'
+export type { Vehiculo } from './Vehiculo.js'
+export type { EstadoPlaza, TipoVehiculo } from '../enums.js'

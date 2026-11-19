@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum TipoVehiculo {
+  AUTO
+  MOTO
+  CAMIONETA
+}
+
+enum EstadoPlaza {
+  LIBRE
+  OCUPADA
+}
+
+model Cliente {
+  id        Int        @id @default(autoincrement())
+  nombre    String
+  documento String     @unique
+  telefono  String?
+  vehiculos Vehiculo[]
+}
+
+model Vehiculo {
+  id           Int       @id @default(autoincrement())
+  patente      String    @unique
+  tipo         TipoVehiculo
+  marca        String?
+  modelo       String?
+  clienteId    Int
+  cliente      Cliente   @relation(fields: [clienteId], references: [id])
+  plazaActual  Plaza?    @relation("PlazaActual")
+  estadias     Estadia[]
+}
+
+model Plaza {
+  id             Int          @id @default(autoincrement())
+  numero         Int          @unique
+  estado         EstadoPlaza  @default(LIBRE)
+  tipoPermitido  TipoVehiculo?
+  vehiculoId     Int?         @unique
+  vehiculo       Vehiculo?    @relation("PlazaActual", fields: [vehiculoId], references: [id])
+  estadias       Estadia[]
+}
+
+model Tarifa {
+  id            Int       @id @default(autoincrement())
+  nombre        String
+  precioPorHora Decimal   @db.Decimal(10, 2)
+  estadias      Estadia[]
+}
+
+model Estadia {
+  id           Int       @id @default(autoincrement())
+  vehiculoId   Int
+  plazaId      Int
+  tarifaId     Int
+  fechaEntrada DateTime  @default(now())
+  fechaSalida  DateTime?
+  monto        Decimal?  @db.Decimal(10, 2)
+  vehiculo     Vehiculo  @relation(fields: [vehiculoId], references: [id])
+  plaza        Plaza     @relation(fields: [plazaId], references: [id])
+  tarifa       Tarifa    @relation(fields: [tarifaId], references: [id])
+}

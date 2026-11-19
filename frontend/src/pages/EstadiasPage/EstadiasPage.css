@@ -1,0 +1,275 @@
+.playa-app {
+  --ink: #141e30;
+  --muted: #69717d;
+  --line: #d8d9d7;
+  --lime: #c9f443;
+  --green: #63b900;
+  display: flex;
+  min-height: 100vh;
+  background: #f5f5f2;
+}
+
+.playa-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex: 0 0 226px;
+  flex-direction: column;
+  height: 100vh;
+  padding: 21px 11px 18px;
+  background: linear-gradient(160deg, #111a2a, #0b1422 72%);
+  color: #f6f8fc;
+}
+
+.playa-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 14px 34px;
+  color: #f8f9fc;
+  font-size: 1.8rem;
+  font-weight: 780;
+  letter-spacing: -0.055em;
+  text-decoration: none;
+}
+
+.playa-brand__p {
+  color: var(--lime);
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.12em;
+}
+
+.playa-sidebar__label {
+  padding: 0 15px 10px;
+  color: #7b8799;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.playa-sidebar nav { display: grid; gap: 7px; }
+
+.playa-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 47px;
+  padding: 0 14px;
+  border-radius: 12px;
+  color: #d8deea;
+  font-size: 0.93rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.playa-nav-item svg { flex: 0 0 auto; }
+.playa-nav-item:hover { background: #ffffff12; color: white; }
+.playa-nav-item--active { background: var(--lime); color: #101a26; box-shadow: 0 8px 20px #b9ea3a20; }
+.playa-nav-item--active:hover { background: #d6ff51; color: #101a26; }
+
+.playa-sidebar__footer {
+  margin-top: auto;
+  padding: 15px 14px 2px;
+  border-top: 1px solid #ffffff28;
+  color: #818da0;
+  font-size: 0.75rem;
+}
+
+.playa-main { flex: 1; min-width: 0; }
+
+.playa-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0 30px;
+  border-bottom: 1px solid var(--line);
+  background: #fbfbf9;
+}
+
+.playa-breadcrumb { display: flex; align-items: center; gap: 12px; color: #6d727a; font-size: 0.86rem; }
+.playa-breadcrumb__slash { color: #a8adb3; }
+.playa-breadcrumb strong { color: var(--ink); font-weight: 750; }
+.playa-topbar__date { display: flex; align-items: center; gap: 10px; color: var(--ink); font-size: 0.83rem; font-weight: 620; }
+.playa-topbar__date svg { color: #495362; }
+
+.playa-content { max-width: 1600px; margin: 0 auto; padding: 24px 28px 32px; }
+.playa-heading { display: flex; align-items: center; justify-content: space-between; margin: 0 0 20px; }
+.playa-eyebrow, .playa-section-kicker { color: #78816e; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; }
+.playa-heading h1 { margin-top: 4px; color: var(--ink); font-size: clamp(1.75rem, 2.5vw, 2.35rem); font-weight: 790; letter-spacing: -0.055em; line-height: 1.1; }
+.playa-heading__subtitle { margin-top: 5px; color: var(--muted); font-size: 0.98rem; }
+
+.playa-alert { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: -3px 0 16px; padding: 11px 14px; border: 1px solid #f1caca; border-radius: 10px; background: #fff6f4; color: #a83b36; font-size: 0.88rem; }
+.playa-alert button { border: 0; background: transparent; color: inherit; font-size: 1.3rem; cursor: pointer; }
+.playa-alert--success { border-color: #c8e4a5; background: #f2fae9; color: #3e6915; }
+
+.playa-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.playa-metric { display: flex; min-height: 127px; flex-direction: column; padding: 15px 17px 13px; border: 1px solid #d4d6d5; border-radius: 14px; background: #fbfbf9; }
+.playa-metric__top { display: flex; align-items: center; gap: 9px; color: #20293a; }
+.playa-metric__top > span { display: grid; place-items: center; width: 26px; height: 26px; color: #303b4d; }
+.playa-metric__top p { font-size: 0.82rem; font-weight: 700; }
+.playa-metric > strong { margin-top: 5px; color: #121b2b; font-size: clamp(1.75rem, 2.5vw, 2.35rem); font-weight: 810; letter-spacing: -0.055em; line-height: 1.08; }
+.playa-metric__foot { display: flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 6px; color: #6c717a; }
+.playa-metric__foot small { font-size: 0.7rem; }
+.playa-progress { flex: 1; height: 7px; overflow: hidden; border-radius: 999px; background: #e2e3e1; }
+.playa-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #a4e900, #68c600); transition: width 180ms ease; }
+.playa-metric--highlight { background: #f4f8e8; border-color: #d9e2c7; }
+
+.playa-workspace { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(380px, 1fr); align-items: start; gap: 14px; }
+.playa-workspace__left { display: grid; gap: 14px; min-width: 0; }
+.playa-panel { min-width: 0; padding: 17px 18px; border: 1px solid #d7d9d8; border-radius: 16px; background: #fbfbf9; }
+.playa-panel__heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.playa-panel__heading h2, .playa-entry__heading h2 { margin-top: 3px; color: var(--ink); font-size: 1.32rem; font-weight: 790; letter-spacing: -0.045em; }
+.playa-section-kicker { font-size: 0.58rem; }
+
+.playa-filters { display: flex; gap: 6px; }
+.playa-filters button { min-height: 31px; padding: 0 11px; border: 1px solid #d0d3d3; border-radius: 999px; background: #fbfbf9; color: #394254; font: inherit; font-size: 0.72rem; cursor: pointer; }
+.playa-filters button:hover { border-color: #a9bb77; }
+.playa-filters button.is-active { border-color: var(--lime); background: var(--lime); color: #1c2611; }
+
+.playa-space-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; }
+.playa-space { position: relative; display: flex; min-width: 0; min-height: 112px; flex-direction: column; align-items: center; justify-content: center; padding: 20px 5px 8px; border: 1px solid #d6d9d6; border-radius: 11px; background: #f3f4f2; transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease; }
+.playa-space--free { border-color: #d1e5cc; background: #eef8ea; }
+.playa-space--occupied { min-height: 132px; padding-bottom: 30px; }
+.playa-space--selected { border: 2px solid #94c900; box-shadow: 0 0 0 3px #d9f59b80; }
+.playa-space__number { position: absolute; top: 7px; left: 9px; color: #283142; font-size: 0.68rem; font-weight: 780; }
+.playa-space__vehicle { display: grid; place-items: center; width: 70px; height: 31px; margin: 4px 0 3px; color: #273343; }
+.playa-space__vehicle svg { width: 64px; height: 33px; fill: #414b58; stroke: #e3e7e9; }
+.playa-space__vehicle--moto svg { width: 47px; fill: none; stroke: #263444; stroke-width: 2.2; }
+.playa-space__vehicle--camioneta svg { fill: #354153; }
+.playa-space__plate { max-width: 100%; overflow: hidden; padding: 1px 7px; border: 1px solid #d4d6d5; border-radius: 999px; background: white; color: #293244; font-size: 0.57rem; font-weight: 760; text-overflow: ellipsis; white-space: nowrap; }
+.playa-space__duration { display: flex; align-items: center; gap: 3px; margin-top: 3px; color: #566071; font-size: 0.57rem; white-space: nowrap; }
+.playa-space__choose { display: grid; justify-items: center; gap: 4px; border: 0; background: transparent; color: #315d16; font: inherit; font-size: 0.7rem; font-weight: 680; cursor: pointer; }
+.playa-space__choose svg { color: #55a700; }
+.playa-space__choose small { color: #68745e; font-size: 0.54rem; text-transform: capitalize; }
+.playa-space__choose:disabled { opacity: 0.34; cursor: not-allowed; }
+.playa-space__exit { position: absolute; right: 5px; bottom: 5px; left: 5px; min-height: 22px; padding: 2px 5px; border: 0; border-radius: 7px; background: #172235; color: #fff; font: inherit; font-size: 0.62rem; font-weight: 720; cursor: pointer; transition: background 120ms ease; }
+.playa-space__exit:hover:not(:disabled) { background: #2c3b52; }
+.playa-space__exit:disabled { cursor: wait; opacity: 0.62; }
+.playa-space-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 12px; color: #586172; font-size: 0.68rem; }
+.playa-space-legend > span { display: flex; align-items: center; gap: 5px; }
+.playa-space-legend__total { padding-left: 12px; border-left: 1px solid #c9ccca; }
+.playa-legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+.playa-legend-dot--free { background: #d8f2d0; }
+.playa-legend-dot--occupied { background: #dddeda; }
+
+.playa-movements { padding-bottom: 12px; }
+.playa-movements__count { color: #747b86; font-size: 0.7rem; }
+.playa-table-wrap { overflow-x: auto; }
+.playa-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+.playa-table th { padding: 7px 9px; background: #f0f1ee; color: #626978; font-size: 0.65rem; font-weight: 700; }
+.playa-table th:first-child { border-radius: 8px 0 0 8px; }
+.playa-table th:last-child { border-radius: 0 8px 8px 0; }
+.playa-table td { padding: 8px 9px; border-bottom: 1px solid #e5e6e3; color: #485162; font-size: 0.69rem; }
+.playa-table tbody tr:last-child td { border-bottom: 0; }
+.playa-table__plate { display: flex; align-items: center; gap: 8px; color: #273143 !important; font-weight: 760; }
+.playa-table__plate svg { width: 18px; height: 18px; color: #303d4e; }
+.playa-movement-tag { display: inline-flex; padding: 3px 9px; border-radius: 999px; background: #e4f7bd; color: #365808; font-weight: 700; }
+.playa-movement-tag--exit { background: #e7e8e7; color: #566071; }
+
+.playa-entry { padding: 20px; }
+.playa-entry__heading { margin-bottom: 17px; }
+.playa-entry__heading h2 { font-size: 1.55rem; }
+.playa-entry__heading > p:last-child { margin-top: 4px; color: #6b717c; font-size: 0.86rem; }
+.playa-entry form { display: grid; gap: 15px; }
+.playa-vehicle-types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.playa-vehicle-types button { display: grid; min-height: 96px; align-content: center; justify-items: center; gap: 7px; border: 1px solid #d4d7d5; border-radius: 12px; background: #f8f8f6; color: #202a3b; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+.playa-vehicle-types button:hover { border-color: #b6d275; }
+.playa-vehicle-types button.is-selected { border: 2px solid #1b2732; background: #f0f8d9; }
+.playa-vehicle-types__icon { display: grid; place-items: center; width: 79px; height: 42px; color: #1d2938; }
+.playa-vehicle-types__icon svg { width: 75px; height: 42px; fill: currentColor; stroke: #f0f1ec; stroke-width: 1.4; }
+.playa-vehicle-types__icon--moto svg { width: 57px; fill: none; stroke: currentColor; stroke-width: 2; }
+.playa-vehicle-types__icon--camioneta svg { width: 80px; }
+
+.playa-field { display: grid; min-width: 0; gap: 6px; color: #30394a; font-size: 0.75rem; font-weight: 720; }
+.playa-field--full { grid-column: 1 / -1; }
+.playa-field input, .playa-field select { width: 100%; min-width: 0; height: 42px; padding: 0 11px; border: 1px solid #c9cdce; border-radius: 9px; background: #fdfdfb; color: #202a3a; font: inherit; font-size: 0.8rem; }
+.playa-field input::placeholder { color: #9298a0; font-weight: 450; }
+.playa-field select { cursor: pointer; }
+.playa-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.playa-search { position: relative; }
+.playa-search svg { position: absolute; top: 11px; left: 10px; color: #6c7583; }
+.playa-search input { padding-left: 36px; }
+.playa-entry__summary { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 1px; padding-top: 13px; border-top: 1px solid #daddda; }
+.playa-entry__summary span { display: flex; align-items: center; gap: 8px; color: #475163; font-size: 0.8rem; }
+.playa-entry__summary strong { color: #172133; font-size: 1.05rem; font-weight: 790; letter-spacing: -0.025em; text-align: right; }
+.playa-entry__hint { color: #777f89; font-size: 0.72rem; line-height: 1.4; }
+.playa-submit { display: flex; align-items: center; justify-content: center; gap: 13px; min-height: 48px; margin-top: 1px; border: 0; border-radius: 10px; background: linear-gradient(110deg, #151f30, #202b3d); color: white; font: inherit; font-size: 0.9rem; font-weight: 750; cursor: pointer; transition: filter 120ms ease, transform 120ms ease; }
+.playa-submit svg { color: var(--lime); }
+.playa-submit:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-1px); }
+.playa-submit:disabled { opacity: 0.48; cursor: not-allowed; }
+.playa-empty { padding: 18px 4px; color: #777e87; font-size: 0.82rem; }
+
+@media (max-width: 1250px) {
+  .playa-sidebar { flex-basis: 198px; }
+  .playa-content { padding-inline: 20px; }
+  .playa-workspace { grid-template-columns: minmax(0, 1.1fr) minmax(355px, 0.9fr); }
+  .playa-space-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 980px) {
+  .playa-workspace { grid-template-columns: minmax(0, 1fr); }
+  .playa-space-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .playa-entry { grid-row: 1; }
+  .playa-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .playa-app { display: block; }
+  .playa-sidebar { position: static; display: flex; width: 100%; height: auto; flex-direction: row; align-items: center; gap: 12px; padding: 10px 14px; }
+  .playa-brand { gap: 7px; padding: 0; font-size: 1.35rem; }
+  .playa-brand__p { font-size: 2.25rem; }
+  .playa-sidebar__label, .playa-sidebar__footer { display: none; }
+  .playa-sidebar nav { margin-left: auto; }
+  .playa-nav-item { min-height: 38px; padding: 0 11px; font-size: 0.8rem; }
+  .playa-nav-item svg { width: 18px; height: 18px; }
+  .playa-topbar { min-height: 48px; padding: 0 16px; }
+  .playa-breadcrumb { gap: 7px; font-size: 0.75rem; }
+  .playa-topbar__date { gap: 6px; font-size: 0.7rem; }
+  .playa-topbar__date svg { width: 16px; }
+  .playa-content { padding: 21px 14px 26px; }
+  .playa-heading { margin-bottom: 16px; }
+  .playa-heading h1 { font-size: 1.85rem; }
+  .playa-heading__subtitle { font-size: 0.84rem; }
+  .playa-metrics { gap: 8px; margin-bottom: 12px; }
+  .playa-metric { min-height: 110px; padding: 11px; }
+  .playa-metric__top { gap: 6px; }
+  .playa-metric__top > span { width: 21px; }
+  .playa-metric__top svg { width: 18px; }
+  .playa-metric__top p { font-size: 0.68rem; }
+  .playa-metric > strong { font-size: 1.55rem; }
+  .playa-metric__foot small { font-size: 0.62rem; }
+  .playa-workspace, .playa-workspace__left { gap: 11px; }
+  .playa-panel { padding: 14px 12px; border-radius: 13px; }
+  .playa-panel__heading { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .playa-panel__heading h2, .playa-entry__heading h2 { font-size: 1.18rem; }
+  .playa-filters { align-self: flex-start; }
+  .playa-space-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+  .playa-space { min-height: 102px; padding-inline: 3px; }
+  .playa-space__number { left: 6px; }
+  .playa-space__vehicle { width: 56px; }
+  .playa-space__vehicle svg { width: 53px; }
+  .playa-space__duration { font-size: 0.51rem; }
+  .playa-space-legend { gap: 8px; font-size: 0.61rem; }
+  .playa-space-legend__total { padding-left: 8px; }
+  .playa-entry { grid-row: auto; padding: 15px 13px; }
+  .playa-entry form { gap: 12px; }
+  .playa-vehicle-types button { min-height: 84px; }
+  .playa-vehicle-types__icon { width: 62px; }
+  .playa-vehicle-types__icon svg { width: 61px; }
+  .playa-form-row { gap: 8px; }
+  .playa-field { font-size: 0.7rem; }
+  .playa-field input, .playa-field select { font-size: 0.73rem; }
+  .playa-entry__summary strong { font-size: 0.9rem; }
+  .playa-table th, .playa-table td { padding-inline: 7px; }
+}
+
+@media (max-width: 390px) {
+  .playa-space-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .playa-topbar__date { font-size: 0; }
+  .playa-topbar__date svg { width: 19px; height: 19px; }
+  .playa-form-row { grid-template-columns: 1fr; }
+}
