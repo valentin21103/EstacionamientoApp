@@ -4,7 +4,7 @@ Playa permite registrar entradas y salidas de vehículos, consultar qué plazas 
 
 Proyecto para la Universidad Tecnológica Nacional. La [carpeta de presentación PPS/TFI](presentacion-pps-tfi/README.md) reúne la documentación académica y sus anexos.
 
-**Contenido:** [Puesta en marcha](#puesta-en-marcha) · [Arquitectura](#arquitectura) · [Infraestructura](#infraestructura) · [Modelo de datos](#modelo-de-datos) · [Frontend](#frontend) · [API](#api) · [Flujo de una estadía](#flujo-de-una-estadía) · [Metodología](#metodología) · [Estado y deuda técnica](#estado-y-deuda-técnica) · [Verificación](#alcance-y-verificación)
+**Contenido:** [Puesta en marcha](#puesta-en-marcha) · [Arquitectura en capas](#arquitectura-en-capas) · [Infraestructura](#infraestructura) · [Modelo de datos](#modelo-de-datos) · [Frontend](#frontend) · [API](#api) · [Flujo de una estadía](#flujo-de-una-estadía) · [Metodología](#metodología) · [Estado y deuda técnica](#estado-y-deuda-técnica) · [Verificación](#alcance-y-verificación)
 
 ## Puesta en marcha
 
@@ -32,15 +32,42 @@ npm run dev
 
 Abrí `http://127.0.0.1:5173`. La API usa por defecto el puerto `3000`. Si necesitás otra dirección, configurá `VITE_API_URL` en el entorno del frontend. `GET /health` comprueba que Express responde. Que Estadías cargue sus plazas y tarifas comprueba además el recorrido hasta la base de datos.
 
-## Arquitectura
+## Arquitectura en capas
+
+Playa tiene un frontend en React y una sola API en Express. El backend se organiza en cuatro capas. Las flechas de este dibujo muestran el recorrido de una solicitud de Estadías.
 
 ```text
-Estadías (React + Vite)
-    → estacionamientoApi.js → fetch / HTTP + JSON
-    → rutas y controladores de Express
-    → servicios de negocio en TypeScript
-    → Prisma → PostgreSQL en Neon
++-------------------------------+
+| Frontend · React              |  Estadías muestra plazas y recibe acciones.
++-------------------------------+
+                |
+                v  HTTP / JSON
++-------------------------------+
+| Presentación · api/           |  La ruta elige el controlador.
+| Rutas, controladores          |  El controlador lee la solicitud
+| y middlewares                 |  y devuelve el resultado HTTP.
++-------------------------------+
+                |
+                v  llamada al servicio
++-------------------------------+     +-------------------------------+
+| Negocio · business/           |     | Dominio · domain/             |
+| EstadiaService, entre otros   |     | Entidades y tipos de Playa    |
++-------------------------------+     +-------------------------------+
+                |                     Describe Cliente, Vehículo,
+                |                     Plaza, Tarifa y Estadía.
+                v  usa Prisma
++-------------------------------+
+| Infraestructura               |  prisma.ts crea el cliente.
+| infrastructure/database/      |  schema.prisma define la persistencia.
++-------------------------------+
+                |
+                v  consultas y transacciones SQL
+        [ PostgreSQL en Neon ]
 ```
+
+La capa de negocio decide si un vehículo puede ocupar una plaza y cuánto se cobra al salir. La de infraestructura ejecuta las consultas. Por ejemplo, al registrar un ingreso, `EstadiaService` comprueba primero compatibilidad y disponibilidad, y después usa Prisma para escribir la estadía y actualizar la plaza dentro de la misma transacción.
+
+El dominio se muestra al costado porque describe conceptos del sistema y no es un paso de esa solicitud. En el código actual, los servicios de negocio importan directamente el cliente Prisma. Esa dependencia es parte de la arquitectura implementada.
 
 | Ubicación | Responsabilidad |
 |---|---|
@@ -98,16 +125,52 @@ En una compilación, Vite genera los archivos estáticos del frontend en `dist/`
 
 Una estadía activa tiene `fechaSalida = null`. Una plaza con `tipoPermitido = null` admite los tres tipos. Las plazas de Auto o Camioneta admiten ambos tipos y las plazas de Moto admiten motos.
 
-### Relaciones y restricciones
+### Diagrama de entidades y relaciones
 
 ```text
-Cliente  1 ─── N Vehículo
-Vehículo 1 ─── N Estadía
-Plaza    1 ─── N Estadía
-Tarifa   1 ─── N Estadía
++----------------------+          +----------------------+
+| Cliente              |          | Vehiculo             |
++----------------------+    1  N  +----------------------+
+| id (PK)              |----------| clienteId (FK)       |
+| nombre               |          | id (PK)              |
+| documento (único)    |          | patente (única)      |
+| telefono?            |          | tipo                 |
++----------------------+          | marca? / modelo?     |
+                                  +----------+-----------+
+                                             | 1
+                                             | Vehiculo.id
+                                             | N
+                                  +----------+-----------+
++----------------------+          | Estadia              |
+| Plaza                |          +----------------------+
++----------------------+          | id (PK)              |
+| id (PK)              |---1---N--| plazaId (FK)         |
+| numero (único)       |          | vehiculoId (FK)      |
+| estado               |          | tarifaId (FK)        |--N---1--+
+| tipoPermitido?       |          | fechaEntrada         |         |
+| vehiculoId? (FK, UQ) |          | fechaSalida?         |         |
++----------------------+          | monto?               |         |
+                                  +----------------------+         |
+                                                                   |
+                                  +----------------------+         |
+                                  | Tarifa               |         |
+                                  +----------------------+         |
+                                  | id (PK)              |---------+
+                                  | nombre               |
+                                  | precioPorHora        |
+                                  +----------------------+
 
-Plaza ─── Vehículo actual (opcional y único)
+Ocupación actual (vínculo adicional):
+Plaza.vehiculoId? ──────────────► Vehiculo.id
+Cada plaza tiene 0 o 1 vehículo actual.
+Cada vehículo ocupa 0 o 1 plaza a la vez.
 ```
+
+**PK** es la clave primaria. **FK** es una clave foránea que apunta a otra tabla. **UQ** significa valor único y **?** indica que el campo admite `null`. Una relación **1 a N** vincula un registro con varios. Por ejemplo, cada vehículo tiene un cliente, y ese mismo cliente puede tener varios vehículos.
+
+**Ejemplo con P06.** Cuando entra el vehículo, `Plaza.vehiculoId` señala quién está ahí ahora y `Estadia.plazaId` registra dónde estacionó. Al cobrar, se vacía `Plaza.vehiculoId` y se guardan la salida y el monto en la estadía. P06 queda disponible y la estadía anterior sigue vinculada a P06 para conservar el historial.
+
+### Restricciones de la base de datos
 
 - Las cinco entidades usan un ID entero autoincremental como clave primaria. El documento del cliente, la patente y el número de plaza tienen restricciones de unicidad.
 - `Estadia.vehiculoId`, `plazaId` y `tarifaId` son claves foráneas. La migración restringe eliminar un vehículo, plaza o tarifa con estadías vinculadas. También restringe eliminar un cliente con vehículos.
